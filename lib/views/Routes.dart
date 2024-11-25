@@ -17,7 +17,7 @@ class MainApp extends StatelessWidget {
       themeMode: ThemeMode.system,
       initialRoute: '/',
       routes: {
-        '/': (context) => const Loging(),
+        '/': (context) => const Login(),
       },
     );
   }
