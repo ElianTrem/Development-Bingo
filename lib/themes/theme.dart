@@ -2,13 +2,16 @@ import 'package:flutter/material.dart';
 
 // Colores tema claro
 const Color celestePrincipal = Color(0xFFB3E5FC); // Celeste base
-const Color verdeAcento = Color(0xFF66BB6A); // Verde suave para acentos
+const Color verdeAcento =
+    Color.fromARGB(255, 6, 57, 112); // Verde suave para acentos
 const Color ambarClaro = Color(0xFFFFD54F); // Ámbar para elementos destacados
 const Color rosaClaro = Color(0xFFFF80AB); // Rosa suave para variación
+const Color trasnsparente = Color.fromARGB(0, 255, 255, 255); // Transparente
 
 // Colores tema oscuro
 const Color moradoPrincipal = Color(0xFF7986CB); // Morado base
-const Color turquesaOscuro = Color(0xFF00796B); // Turquesa para acentos
+const Color turquesaOscuro =
+    Color.fromARGB(255, 255, 255, 255); // Turquesa para acentos
 const Color coralOscuro = Color(0xFFFF5252); // Coral para alertas/énfasis
 const Color doradoOscuro =
     Color(0xFFFFB300); // Dorado para elementos especiales

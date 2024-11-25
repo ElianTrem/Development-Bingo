@@ -1,17 +1,19 @@
 import 'package:bingo/themes/theme.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 
-class Login extends StatefulWidget {
-  const Login({super.key});
+class Register extends StatefulWidget {
+  const Register({super.key});
+
   @override
-  _LoginState createState() => _LoginState();
+  _RegisterState createState() => _RegisterState();
 }
 
-class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
+class _RegisterState extends State<Register>
+    with SingleTickerProviderStateMixin {
   final _formKey = GlobalKey<FormState>();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
+  final _confirmPasswordController = TextEditingController();
   late AnimationController _animationController;
 
   @override
@@ -20,7 +22,7 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
     _animationController = AnimationController(
       vsync: this,
       duration: const Duration(seconds: 10),
-    )..repeat(); // Repeat animation indefinitely
+    )..repeat();
   }
 
   @override
@@ -28,6 +30,7 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
     _animationController.dispose();
     _emailController.dispose();
     _passwordController.dispose();
+    _confirmPasswordController.dispose();
     super.dispose();
   }
 
@@ -39,13 +42,11 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
     return Scaffold(
       body: Stack(
         children: [
-          // Dynamic animated background with two images for continuous effect
           AnimatedBuilder(
             animation: _animationController,
             builder: (context, child) {
               return Stack(
                 children: [
-                  // First image
                   Positioned(
                     left: -MediaQuery.of(context).size.width +
                         (MediaQuery.of(context).size.width *
@@ -60,7 +61,6 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
                       height: MediaQuery.of(context).size.height,
                     ),
                   ),
-                  // Second image (duplicated)
                   Positioned(
                     left: MediaQuery.of(context).size.width +
                         (-MediaQuery.of(context).size.width *
@@ -79,7 +79,6 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
               );
             },
           ),
-          // Rest of the login screen content remains the same
           SafeArea(
             child: Center(
               child: SingleChildScrollView(
@@ -95,18 +94,16 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
                         mainAxisSize: MainAxisSize.min,
                         children: [
                           Icon(
-                            Icons.account_circle,
+                            Icons.person_add,
                             size: 80,
                             color: Theme.of(context).colorScheme.secondary,
                           ),
                           const SizedBox(height: 24),
                           Text(
-                            'Bienvenido',
+                            'Regístrate',
                             style: Theme.of(context).textTheme.titleLarge,
                           ),
                           const SizedBox(height: 24),
-
-                          // Email field
                           TextFormField(
                             controller: _emailController,
                             keyboardType: TextInputType.emailAddress,
@@ -131,8 +128,6 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
                             },
                           ),
                           const SizedBox(height: 16),
-
-                          // Password field
                           TextFormField(
                             controller: _passwordController,
                             obscureText: true,
@@ -156,16 +151,38 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
                               return null;
                             },
                           ),
+                          const SizedBox(height: 16),
+                          TextFormField(
+                            controller: _confirmPasswordController,
+                            obscureText: true,
+                            decoration: InputDecoration(
+                              labelText: 'Confirmar Contraseña',
+                              prefixIcon: Icon(
+                                Icons.lock,
+                                color: Theme.of(context).colorScheme.secondary,
+                              ),
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(12),
+                              ),
+                            ),
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return 'Por favor confirme su contraseña';
+                              }
+                              if (value != _passwordController.text) {
+                                return 'Las contraseñas no coinciden';
+                              }
+                              return null;
+                            },
+                          ),
                           const SizedBox(height: 24),
-
-                          // Login button
                           SizedBox(
                             width: double.infinity,
                             height: 50,
                             child: ElevatedButton(
                               onPressed: () {
                                 if (_formKey.currentState!.validate()) {
-                                  // Login logic here
+                                  // Registro logic aquí
                                   print('Email: ${_emailController.text}');
                                   print(
                                       'Password: ${_passwordController.text}');
@@ -177,42 +194,17 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
                                 foregroundColor: Theme.of(context).brightness ==
                                         Brightness.light
                                     ? blanco // Color del texto para el modo claro
-                                    : moradoPrincipal, // Color del texto para el modo oscuro
+                                    : moradoPrincipal,
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(12),
                                 ),
                               ),
                               child: const Text(
-                                'Iniciar Sesión',
+                                'Registrarse',
                                 style: TextStyle(
                                   fontSize: 18,
                                   fontWeight: FontWeight.bold,
                                 ),
-                              ),
-                            ),
-                          ),
-                          const SizedBox(height: 16),
-
-                          // Forgot password link
-                          TextButton(
-                            onPressed: () {
-                              Get.toNamed('/recovery');
-                            },
-                            child: Text(
-                              '¿Olvidaste tu contraseña?',
-                              style: TextStyle(
-                                color: Theme.of(context).colorScheme.secondary,
-                              ),
-                            ),
-                          ),
-                          TextButton(
-                            onPressed: () {
-                              Get.toNamed('/register');
-                            },
-                            child: Text(
-                              'Registrate aqui',
-                              style: TextStyle(
-                                color: Theme.of(context).colorScheme.secondary,
                               ),
                             ),
                           ),
