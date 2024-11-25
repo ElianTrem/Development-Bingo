@@ -1,49 +1,64 @@
-// ignore_for_file: non_constant_identifier_names
+/**
+ * CREATE TABLE "Winners" (
+  "winner_id" integer PRIMARY KEY,
+  "player_id" integer NOT NULL,
+  "game_id" integer NOT NULL,
+  "cardboard_id" integer NOT NULL,
+  "winning_time" timestamp DEFAULT 'NOW()',
+  "validation_status" varchar DEFAULT 'pending'
+);
+ */
 
-class Users {
-  final int user_id;
-  final String name;
-  final String email;
-  final String password_hash;
-  final int role_id;
+class Winners {
+  final int winner_id;
+  final int player_id;
+  final int game_id;
+  final int cardboard_id;
+  final DateTime winning_time;
+  final String validation_status;
 
-  Users({
-    required this.user_id,
-    required this.name,
-    required this.email,
-    required this.password_hash,
-    required this.role_id,
+  Winners({
+    required this.winner_id,
+    required this.player_id,
+    required this.game_id,
+    required this.cardboard_id,
+    required this.winning_time,
+    required this.validation_status,
   });
 
-  Users copy({
-    int? user_id,
-    String? name,
-    String? email,
-    String? password_hash,
-    int? role_id,
+  Winners copy({
+    int? winner_id,
+    int? player_id,
+    int? game_id,
+    int? cardboard_id,
+    DateTime? winning_time,
+    String? validation_status,
   }) =>
-      Users(
-        user_id: user_id ?? this.user_id,
-        name: name ?? this.name,
-        email: email ?? this.email,
-        password_hash: password_hash ?? this.password_hash,
-        role_id: role_id ?? this.role_id,
+      Winners(
+        winner_id: winner_id ?? this.winner_id,
+        player_id: player_id ?? this.player_id,
+        game_id: game_id ?? this.game_id,
+        cardboard_id: cardboard_id ?? this.cardboard_id,
+        winning_time: winning_time ?? this.winning_time,
+        validation_status: validation_status ?? this.validation_status,
       );
 
-  static Users fromJson(Map<String, Object?> json) => Users(
-        user_id: json['user_id'] as int,
-        name: json['name'] as String,
-        email: json['email'] as String,
-        password_hash: json['password_hash'] as String,
-        role_id: json['role_id'] as int,
+  static Winners fromJson(Map<String, Object?> json) => Winners(
+        winner_id: json['winner_id'] as int,
+        player_id: json['player_id'] as int,
+        game_id: json['game_id'] as int,
+        cardboard_id: json['cardboard_id'] as int,
+        winning_time: DateTime.parse(json['winning_time'] as String),
+        validation_status: json['validation_status'] as String,
       );
 
   //Esto llama a un objero Json
   Map<String, Object?> toJson() => {
-        'user_id': user_id,
-        'name': name,
-        'email': email,
-        'password_hash': password_hash,
-        'role_id': role_id,
+        'winner_id': winner_id,
+        'player_id': player_id,
+        'game_id': game_id,
+        'cardboard_id': cardboard_id,
+        'winning_time': winning_time.toIso8601String(),
+        'validation_status': validation_status,
       };
 }
