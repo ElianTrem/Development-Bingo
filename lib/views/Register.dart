@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:bingo/themes/theme.dart';
 import 'package:flutter/material.dart';
 
@@ -45,34 +47,44 @@ class _RegisterState extends State<Register>
           AnimatedBuilder(
             animation: _animationController,
             builder: (context, child) {
+              double imageWidth = MediaQuery.of(context).size.width;
+              double imageHeight = MediaQuery.of(context).size.height;
+
+              double firstImageLeft = lerpDouble(
+                -imageWidth,
+                0,
+                _animationController.value,
+              )!;
+              double secondImageLeft = lerpDouble(
+                0,
+                imageWidth,
+                _animationController.value,
+              )!;
+
               return Stack(
                 children: [
                   Positioned(
-                    left: -MediaQuery.of(context).size.width +
-                        (MediaQuery.of(context).size.width *
-                            _animationController.value *
-                            2),
+                    left: firstImageLeft,
+                    top: 0,
                     child: Image.network(
                       isLightMode
                           ? 'https://firebasestorage.googleapis.com/v0/b/prueba-49b43.appspot.com/o/7.png?alt=media&token=c9d6d41d-62a5-4eaa-9ad8-6d432db08130'
                           : 'https://firebasestorage.googleapis.com/v0/b/prueba-49b43.appspot.com/o/8.png?alt=media&token=d62f1cae-d957-45f9-9de7-fa46e278935d',
                       fit: BoxFit.cover,
-                      width: MediaQuery.of(context).size.width * 2,
-                      height: MediaQuery.of(context).size.height,
+                      width: imageWidth,
+                      height: imageHeight,
                     ),
                   ),
                   Positioned(
-                    left: MediaQuery.of(context).size.width +
-                        (-MediaQuery.of(context).size.width *
-                            _animationController.value *
-                            2),
+                    left: secondImageLeft,
+                    top: 0,
                     child: Image.network(
                       isLightMode
                           ? 'https://firebasestorage.googleapis.com/v0/b/prueba-49b43.appspot.com/o/7.png?alt=media&token=c9d6d41d-62a5-4eaa-9ad8-6d432db08130'
                           : 'https://firebasestorage.googleapis.com/v0/b/prueba-49b43.appspot.com/o/8.png?alt=media&token=d62f1cae-d957-45f9-9de7-fa46e278935d',
                       fit: BoxFit.cover,
-                      width: MediaQuery.of(context).size.width * 2,
-                      height: MediaQuery.of(context).size.height,
+                      width: imageWidth,
+                      height: imageHeight,
                     ),
                   ),
                 ],

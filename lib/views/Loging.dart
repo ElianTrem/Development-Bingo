@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:bingo/themes/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -20,7 +22,7 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
     _animationController = AnimationController(
       vsync: this,
       duration: const Duration(seconds: 10),
-    )..repeat(); // Repeat animation indefinitely
+    )..repeat(); // Repetir la animación indefinidamente
   }
 
   @override
@@ -39,47 +41,55 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
     return Scaffold(
       body: Stack(
         children: [
-          // Dynamic animated background with two images for continuous effect
+          // Fondo animado con imágenes
           AnimatedBuilder(
             animation: _animationController,
             builder: (context, child) {
+              double imageWidth = MediaQuery.of(context).size.width;
+              double imageHeight = MediaQuery.of(context).size.height;
+
+              double firstImageLeft = lerpDouble(
+                -imageWidth,
+                0,
+                _animationController.value,
+              )!;
+              double secondImageLeft = lerpDouble(
+                0,
+                imageWidth,
+                _animationController.value,
+              )!;
+
               return Stack(
                 children: [
-                  // First image
                   Positioned(
-                    left: -MediaQuery.of(context).size.width +
-                        (MediaQuery.of(context).size.width *
-                            _animationController.value *
-                            2),
+                    left: firstImageLeft,
+                    top: 0,
                     child: Image.network(
                       isLightMode
                           ? 'https://firebasestorage.googleapis.com/v0/b/prueba-49b43.appspot.com/o/7.png?alt=media&token=c9d6d41d-62a5-4eaa-9ad8-6d432db08130'
                           : 'https://firebasestorage.googleapis.com/v0/b/prueba-49b43.appspot.com/o/8.png?alt=media&token=d62f1cae-d957-45f9-9de7-fa46e278935d',
                       fit: BoxFit.cover,
-                      width: MediaQuery.of(context).size.width * 2,
-                      height: MediaQuery.of(context).size.height,
+                      width: imageWidth,
+                      height: imageHeight,
                     ),
                   ),
-                  // Second image (duplicated)
                   Positioned(
-                    left: MediaQuery.of(context).size.width +
-                        (-MediaQuery.of(context).size.width *
-                            _animationController.value *
-                            2),
+                    left: secondImageLeft,
+                    top: 0,
                     child: Image.network(
                       isLightMode
                           ? 'https://firebasestorage.googleapis.com/v0/b/prueba-49b43.appspot.com/o/7.png?alt=media&token=c9d6d41d-62a5-4eaa-9ad8-6d432db08130'
                           : 'https://firebasestorage.googleapis.com/v0/b/prueba-49b43.appspot.com/o/8.png?alt=media&token=d62f1cae-d957-45f9-9de7-fa46e278935d',
                       fit: BoxFit.cover,
-                      width: MediaQuery.of(context).size.width * 2,
-                      height: MediaQuery.of(context).size.height,
+                      width: imageWidth,
+                      height: imageHeight,
                     ),
                   ),
                 ],
               );
             },
           ),
-          // Rest of the login screen content remains the same
+          // Contenido de la pantalla de inicio de sesión
           SafeArea(
             child: Center(
               child: SingleChildScrollView(
@@ -105,8 +115,7 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
                             style: Theme.of(context).textTheme.titleLarge,
                           ),
                           const SizedBox(height: 24),
-
-                          // Email field
+                          // Campo de correo electrónico
                           TextFormField(
                             controller: _emailController,
                             keyboardType: TextInputType.emailAddress,
@@ -131,8 +140,7 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
                             },
                           ),
                           const SizedBox(height: 16),
-
-                          // Password field
+                          // Campo de contraseña
                           TextFormField(
                             controller: _passwordController,
                             obscureText: true,
@@ -157,15 +165,14 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
                             },
                           ),
                           const SizedBox(height: 24),
-
-                          // Login button
+                          // Botón de inicio de sesión
                           SizedBox(
                             width: double.infinity,
                             height: 50,
                             child: ElevatedButton(
                               onPressed: () {
                                 if (_formKey.currentState!.validate()) {
-                                  // Login logic here
+                                  // Lógica de inicio de sesión
                                   print('Email: ${_emailController.text}');
                                   print(
                                       'Password: ${_passwordController.text}');
@@ -176,8 +183,8 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
                                     Theme.of(context).colorScheme.secondary,
                                 foregroundColor: Theme.of(context).brightness ==
                                         Brightness.light
-                                    ? blanco // Color del texto para el modo claro
-                                    : moradoPrincipal, // Color del texto para el modo oscuro
+                                    ? blanco
+                                    : moradoPrincipal,
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(12),
                                 ),
@@ -192,8 +199,7 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
                             ),
                           ),
                           const SizedBox(height: 16),
-
-                          // Forgot password link
+                          // Enlaces
                           TextButton(
                             onPressed: () {
                               Get.toNamed('/recovery');
